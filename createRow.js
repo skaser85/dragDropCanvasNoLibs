@@ -5,5 +5,6 @@ function createRow(canvas, rowNum) {
         ctx: canvas.ctx,
         letter: letter,
         block: block,
+        pool: canvas.pool
     });
 }

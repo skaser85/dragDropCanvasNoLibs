@@ -58,6 +58,12 @@ class PopUp extends Box {
         this._show = value;
     }
 
+    update(mx, my) {
+        this._buttons.forEach(b => {
+            b.update(mx, my);
+        });
+    }
+
     draw() {
         if (this._show) {
             /* BODY RECT AND TEXT */

@@ -31,7 +31,7 @@ class Droppables {
         });
     }
 
-    update(mx, my) {
+    checkForHighlightedDroppable(mx, my) {
         if (this._highlighted) {
             if (!this._highlighted.contains(mx, my)) {
                 this._highlighted.highlighted = true;
@@ -51,8 +51,23 @@ class Droppables {
         }
     }
 
-    pool() {
-
+    update(mx, my, partHighlighted) {
+        if (partHighlighted) {
+            if (partHighlighted.dragging) {
+                this.checkForHighlightedDroppable(mx, my);
+            } else {
+                if (this.highlighted) {
+                    this._highlighted.highlighted = false;
+                    this._highlighted = null;
+                }
+            }
+        } else {
+            if (this.highlighted) {
+                this._highlighted.highlighted = false;
+                this._highlighted = null;
+            }
+        }
+        console.log(this._highlighted);
     }
 
     draw() {

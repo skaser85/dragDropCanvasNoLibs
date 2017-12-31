@@ -1,6 +1,7 @@
 class RowBlock {
     constructor(options) {
         this._ctx = options.ctx;
+        this._pool = options.pool;
         this.letter = options.letter;
         this.block = options.block;
         this.length = 50;
@@ -28,8 +29,16 @@ class RowBlock {
         this._menu.showTitle = false;
     }
 
-    update(mx, my) {
-        this.rows.update(mx, my);
+    get menu() {
+        return this._menu;
+    }
+
+    get popup() {
+        return this._popup;
+    }
+
+    update(mx, my, partHighlighted) {
+        this.rows.update(mx, my, partHighlighted);
         for (let i = 0; i < this.rows.droppables.length; i++) {
             let t = this.rows.droppables[i]._textBox;
             if (t.contains(mx, my)) {
@@ -38,14 +47,14 @@ class RowBlock {
                 t.highlighted = false;
             }
         }
-        if (this._popup.show) {
-            this._popup.buttons.forEach(b => {
-                b.update(mx, my);
-            });
-        }
-        if (this._menu.show) {
-            this._menu.update(mx, my);
-        }
+        // if (this._popup.show) {
+        //     this._popup.buttons.forEach(b => {
+        //         b.update(mx, my);
+        //     });
+        // }
+        // if (this._menu.show) {
+        //     this._menu.update(mx, my);
+        // }
     }
 
     checkForClick(mx, my) {
@@ -100,8 +109,8 @@ class RowBlock {
             if (this._itemSelected.__proto__.constructor === PartRow) {
                 if (this._itemSelected.draggables.length > 0) {
                     this._itemSelected.draggables.forEach(dragger => {
-                        dragger.move(pool.x, pool.y);
-                        dragger.attach(pool);
+                        dragger.move(this._pool.x, this._pool.y);
+                        dragger.attach(this._pool);
                     })
                 }
             }
@@ -295,15 +304,5 @@ class RowBlock {
         if (this.rows.droppables.length > 0) {
             this.rows.draw();
         }
-
-        if (this._popup.show) {
-            this._popup.draw();
-        }
-
-        if (this._menu.show) {
-            this._menu.draw();
-        }
     }
-
-
 }

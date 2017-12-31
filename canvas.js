@@ -6,12 +6,13 @@ class Canvas {
         this._height = options.hasOwnProperty("height") ? options.height : window.innerHeight;
         this._background = options.hasOwnProperty("background") ? options.background : "#888"; //"#e8eaee"
         this._parts = null;
-        this._droppables = null;
+        this._poolContainer = null;
         this._block = null;
         this._menu = null;
         this._mousePressed = false;
         this._mouseReleased = false;
-        this._pool = null;
+        this._poolContainer = null;
+        this._partHighlighted = null;
     }
 
     get elt() {
@@ -36,10 +37,6 @@ class Canvas {
 
     get parts() {
         return this._parts;
-    }
-
-    get droppables() {
-        return this._droppables;
     }
 
     get block() {
@@ -78,10 +75,6 @@ class Canvas {
         this._parts = value;
     }
 
-    set droppables(value) {
-        this._droppables = value;
-    }
-
     set block(value) {
         this._block = value;
     }
@@ -98,15 +91,10 @@ class Canvas {
         this._mouseRelease = value;
     }
 
-    set pool(value) {
-        this._droppables = value;
-        this._pool = value.pool;
-    }
-
     createPool() {
-        let pool = createPool(this);
-        this._droppables = pool;
-        this._pool = pool.pool;
+        let poolContainer = createPool(this);
+        this._poolContainer = poolContainer;
+        this._pool = poolContainer.pool;
     }
 
     createBlock(rowNum) {
@@ -123,10 +111,18 @@ class Canvas {
     }
 
     mousemove(e) {
-        this._parts.update(e.x, e.y, e.movementX, e.movementY, this._mousePressed);
-        this._droppables.update(e.x, e.y);
-        this._block.update(e.x, e.y);
-        this._menu.update(e.x, e.y);
+        if (this._block.popup.show) {
+            this._block.popup.update(e.x, e.y);
+        } else if (this._block.menu.show) {
+            this._block.menu.update(e.x, e.y);
+        } else {
+            // do we need a separate variable for the part that's highlighted?
+            // why not just say this._parts.highlighted
+            this._partHighlighted = this._parts.update(e.x, e.y, e.movementX, e.movementY, this._mousePressed);
+            this._poolContainer.update(e.x, e.y, this._partHighlighted);
+            this._block.update(e.x, e.y, this._partHighlighted);
+            this._menu.update(e.x, e.y);
+        }
     }
 
     mousedown(e) {
@@ -137,7 +133,8 @@ class Canvas {
     mouseup(e) {
         this._mousePressed = false;
         this._mouseReleased = true;
-        this._parts.drop([this._droppables.highlighted, this._block.rows.highlighted]);
+        // console.log(this._poolContainer.highlighted);
+        this._parts.drop([this._poolContainer.highlighted, this._block.rows.highlighted]);
         this._block.checkForClick(e.x, e.y);
         this._menu.checkForClick(e.x, e.y);
     }
@@ -155,10 +152,24 @@ class Canvas {
     }
 
     draw() {
+        // clear the screen at the start of every frame
         this._ctx.clearRect(0, 0, this.width, this.height);
-        this._block.draw();
-        this._droppables.draw();
-        this._parts.draw();
+        // draw the menu
         this._menu.draw();
+        // draw the row, walkways, hoist poles and beams
+        this._block.draw();
+        // draw the pool
+        this._poolContainer.draw();
+        // draw the parts - this needs to happen after all the droppables
+        // have been drawn so that the parts get drawn on top of the rows
+        this._parts.draw();
+
+        if (this._block.popup.show) {
+            this._block.popup.draw();
+        }
+
+        if (this._block.menu.show) {
+            this._block.menu.draw();
+        }
     }
 }

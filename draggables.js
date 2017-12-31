@@ -4,6 +4,10 @@ class Draggables {
         this._highlighted = null;
     }
 
+    get highlighted() {
+        return this._highlighted;
+    }
+
     addDraggable(dragger) {
         this._draggables.push(dragger);
     }
@@ -41,6 +45,8 @@ class Draggables {
                 }
             });
         }
+
+        return this._highlighted;
     }
 
     drop(droppables) {
