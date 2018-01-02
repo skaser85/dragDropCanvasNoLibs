@@ -54,6 +54,7 @@ class Droppables {
     update(mx, my, partHighlighted) {
         if (partHighlighted) {
             if (partHighlighted.dragging) {
+                // console.log("dragging");
                 this.checkForHighlightedDroppable(mx, my);
             } else {
                 if (this.highlighted) {
@@ -67,7 +68,6 @@ class Droppables {
                 this._highlighted = null;
             }
         }
-        console.log(this._highlighted);
     }
 
     draw() {

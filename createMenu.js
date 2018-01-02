@@ -1,11 +1,12 @@
-function createMenu(canvas, row, x, y, title) {
+function createMenu(canvas, row, x, y, title, dropShadow = false) {
     let buttons = new ButtonMenu({
         ctx: canvas.ctx,
         x: x,
         y: y,
         w: 320,
         h: 298,
-        title: title
+        title: title,
+        hasDropShadow: dropShadow
     });
 
     let buttonYstart = buttons.y + 15;// - 290;
@@ -29,6 +30,8 @@ function createMenu(canvas, row, x, y, title) {
         },
         fillColorDefault: "#ff6666",
         fillColorHighlighted: "#ff0000",
+        hasDropShadow: true,
+        dropShadowColors: { default: "#ffffff" },
         callback: () => {
             row.deleteItem();
         }
@@ -49,6 +52,8 @@ function createMenu(canvas, row, x, y, title) {
         },
         fillColorDefault: "#00aa00",
         fillColorHighlighted: "#00ff00",
+        hasDropShadow: true,
+        dropShadowColors: { default: "#ffffff" },
         callback: () => {
             let dragger = new Draggable({
                 ctx: canvas.ctx,
@@ -86,6 +91,7 @@ function createMenu(canvas, row, x, y, title) {
         },
         fillColorDefault: "#0066ff",
         fillColorHighlighted: "#0000ff",
+        hasDropShadow: true,
         callback: () => {
             row.addItemLeft("partRow");
         }
@@ -101,6 +107,8 @@ function createMenu(canvas, row, x, y, title) {
             default: "#000000"
         },
         breakAtSpace: true,
+        hasDropShadow: true,
+        dropShadowColors: { default: "#ffffff" },
         callback: () => {
             row.addItem("partRow");
         }
@@ -119,6 +127,7 @@ function createMenu(canvas, row, x, y, title) {
         },
         fillColorDefault: "#0066ff",
         fillColorHighlighted: "#0000ff",
+        hasDropShadow: true,
         callback: () => {
             row.addItemRight("partRow");
         }
@@ -143,6 +152,7 @@ function createMenu(canvas, row, x, y, title) {
         },
         fillColorDefault: "#0066ff",
         fillColorHighlighted: "#0000ff",
+        hasDropShadow: true,
         callback: () => {
             row.addItemLeft("ww");
         }
@@ -158,6 +168,8 @@ function createMenu(canvas, row, x, y, title) {
         fontColors: {
             default: "#000000"
         },
+        hasDropShadow: true,
+        dropShadowColors: { default: "#ffffff" },
         callback: () => {
             row.addItem("ww");
         }
@@ -176,6 +188,7 @@ function createMenu(canvas, row, x, y, title) {
         },
         fillColorDefault: "#0066ff",
         fillColorHighlighted: "#0000ff",
+        hasDropShadow: true,
         callback: () => {
             row.addItemRight("ww");
         }
@@ -200,6 +213,7 @@ function createMenu(canvas, row, x, y, title) {
         },
         fillColorDefault: "#0066ff",
         fillColorHighlighted: "#0000ff",
+        hasDropShadow: true,
         callback: () => {
             row.addItemLeft("hp");
         }
@@ -213,6 +227,8 @@ function createMenu(canvas, row, x, y, title) {
         text: "Add Hoist Pole",
         breakAtSpace: true,
         fontSize: 15,
+        hasDropShadow: true,
+        dropShadowColors: { default: "#ffffff" },
         fontColors: {
             default: "#000000"
         },
@@ -234,6 +250,7 @@ function createMenu(canvas, row, x, y, title) {
         },
         fillColorDefault: "#0066ff",
         fillColorHighlighted: "#0000ff",
+        hasDropShadow: true,
         callback: () => {
             row.addItemRight("hp");
         }
@@ -258,6 +275,7 @@ function createMenu(canvas, row, x, y, title) {
         },
         fillColorDefault: "#0066ff",
         fillColorHighlighted: "#0000ff",
+        hasDropShadow: true,
         callback: () => {
             row.addItemLeft("beam");
         }
@@ -270,6 +288,8 @@ function createMenu(canvas, row, x, y, title) {
         h: 50,
         text: "Add Beam",
         breakAtSpace: true,
+        hasDropShadow: true,
+        dropShadowColors: { default: "#ffffff" },
         fontColors: {
             default: "#000000"
         },
@@ -291,6 +311,7 @@ function createMenu(canvas, row, x, y, title) {
         },
         fillColorDefault: "#0066ff",
         fillColorHighlighted: "#0000ff",
+        hasDropShadow: true,
         callback: () => {
             row.addItemRight("beam");
         }

@@ -13,8 +13,10 @@ class Button extends Box {
             fontSize: options.hasOwnProperty("fontSize") ? options.fontSize : 15,
             fontColors: options.hasOwnProperty("fontColors") ? options.fontColors : {default: "#000000"},
             stroke: false,
-            fill: true
-        })
+            fill: true,
+            hasDropShadow: options.hasOwnProperty("hasDropShadow") ? options.hasDropShadow : false,
+            dropShadowColors: options.hasOwnProperty("dropShadowColors") ? options.dropShadowColors : {default: "#000000"}
+        });
     }
 
     click() {

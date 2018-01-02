@@ -20,8 +20,12 @@ class Walkway extends Droppable {
                 default: "#0066aa"
             },
             stroke: false,
-            fill: true
-        })
+            fill: true,
+            hasDropShadow: options.hasOwnProperty("hasDropShadow") ? options.hasDropShadow : false,
+            dropShadowColors: options.hasOwnProperty("dropShadowColors") ? options.dropShadowColors : {default: "#000000"},
+            dropShadowXoffset: options.hasOwnProperty("dropShadowXoffset") ? options.dropShadowXoffset : 2,
+            dropShadowYoffset: options.hasOwnProperty("dropShadowYoffset") ? options.dropShadowYoffset : 1,
+        });
     }
 
     get selected() {
@@ -40,9 +44,6 @@ class Walkway extends Droppable {
     }
 
     draw() {
-        if(this._textBox._drawText.text === "HP") {
-            // debugger;
-        }
         this._shapes.rect(this._x, this._y, this._w, this._h, {
             fill: true,
             fillStyle: this._fillColors.default,

@@ -47,14 +47,6 @@ class RowBlock {
                 t.highlighted = false;
             }
         }
-        // if (this._popup.show) {
-        //     this._popup.buttons.forEach(b => {
-        //         b.update(mx, my);
-        //     });
-        // }
-        // if (this._menu.show) {
-        //     this._menu.update(mx, my);
-        // }
     }
 
     checkForClick(mx, my) {
@@ -228,7 +220,9 @@ class RowBlock {
             y: this.top,
             w: this.size.w / 3,
             h: this.size.h,
-            text: "BEAM"
+            text: "BEAM",
+            hasDropShadow: true,
+            dropShadowColors: {default: "#0000ff"}
         });
         newBeam._textBox = new TextBox({
             ctx: newBeam._ctx,
@@ -249,7 +243,9 @@ class RowBlock {
             y: this.top,
             w: this.size.w / 4,
             h: this.size.h,
-            text: "HOIST POLE"
+            text: "HOIST POLE",
+            hasDropShadow: true,
+            dropShadowColors: {default: "#999900"}
         });
         newHP._textBox = new TextBox({
             ctx: newHP._ctx,
@@ -271,7 +267,9 @@ class RowBlock {
             y: this.top,
             w: this.size.w / 2,
             h: this.size.h,
-            text: "WALKWAY"
+            text: "WALKWAY",
+            hasDropShadow: true,
+            dropShadowColors: {default: "#00ff00"}
         });
         ww._textBox = new TextBox({
             ctx: ww._ctx,

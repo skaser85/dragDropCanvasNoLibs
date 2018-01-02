@@ -13,6 +13,8 @@ class Draggables {
     }
 
     update(mx, my, ox, oy, mousePressed) {
+        // console.log("ox: ", ox);
+        // console.log("oy: ", oy);
         if (this._highlighted) {
             if (!this._highlighted.contains(mx, my)) {
                 this._highlighted.highlighted = false;
@@ -51,7 +53,7 @@ class Draggables {
 
     drop(droppables) {
         let droppable;
-        if(droppables[0]) {
+        if (droppables[0]) {
             droppable = droppables[0];
         } else if (droppables[1]) {
             droppable = droppables[1];

@@ -1,5 +1,6 @@
 class ButtonMenu extends Box {
     constructor(options) {
+        console.log(options);
         super(options);
         this._drawText = new DrawText({
             ctx: this._ctx,
@@ -8,7 +9,9 @@ class ButtonMenu extends Box {
             fontName: "Bungee",
             fontSize: "24",
             stroke: false,
-            fill: true
+            fill: true,
+            hasDropShadow: options.hasOwnProperty("hasDropShadow") ? options.hasDropShadow : false,
+            dropShadowColors: options.hasOwnProperty("dropShadowColors") ? options.dropShadowColors : {default: "#ffffff"}
         });
         this._buttons = [];
         this._show = false;

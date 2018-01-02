@@ -13,6 +13,10 @@ class Canvas {
         this._mouseReleased = false;
         this._poolContainer = null;
         this._partHighlighted = null;
+        this.curX = 0;
+        this.curY = 0;
+        this.lastX = 0
+        this.lastY = 0;
     }
 
     get elt() {
@@ -101,8 +105,8 @@ class Canvas {
         this._block = createRow(this, rowNum);
     }
 
-    createMenu(x, y, title) {
-        this._menu = createMenu(this, this.block, x, y, title);
+    createMenu(x, y, title, dropShadow) {
+        this._menu = createMenu(this, this.block, x, y, title, dropShadow);
         this._menu.show = true;
     }
 
@@ -111,6 +115,9 @@ class Canvas {
     }
 
     mousemove(e) {
+        console.log(e.buttons);
+        this.curX = e.x;
+        this.curY = e.y;
         if (this._block.popup.show) {
             this._block.popup.update(e.x, e.y);
         } else if (this._block.menu.show) {
@@ -118,16 +125,23 @@ class Canvas {
         } else {
             // do we need a separate variable for the part that's highlighted?
             // why not just say this._parts.highlighted
+            this._mousePressed = e.buttons === 1
             this._partHighlighted = this._parts.update(e.x, e.y, e.movementX, e.movementY, this._mousePressed);
             this._poolContainer.update(e.x, e.y, this._partHighlighted);
             this._block.update(e.x, e.y, this._partHighlighted);
             this._menu.update(e.x, e.y);
         }
+        this.lastX = this.curX;
+        this.lastY = this.curY;
+        // console.log(this._mousePressed);
     }
 
     mousedown(e) {
-        this._mousePressed = true;
-        this._mouseReleased = false;
+        // this._mousePressed = true;
+        // this._mouseReleased = false;
+        // console.log(e.x, e.y);
+        // console.log("this.lastX: ", this.lastX);
+        // console.log("this.lastY: ", this.lastY);
     }
 
     mouseup(e) {

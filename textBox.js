@@ -9,13 +9,13 @@ class TextBox extends Box {
             elt: this,
             text: options.hasOwnProperty("text") ? options.text : "",
             fontName: options.hasOwnProperty("fontName") ? options.fontName : "Lato",
-            fontSize: options.hasOwnProperty("fontSize") ? options.fontSize : 20,
+            fontSize: 20,//options.hasOwnProperty("fontSize") ? options.fontSize : 20,
             fontColors: {
-                default: "#000000", 
-                highlighted: "#ffffff"
+                default: "#ffffff",
+                highlighted: "#000000",
             },
             stroke: false,
-            fill: true
+            fill: true,
         });
     }
 

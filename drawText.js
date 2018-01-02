@@ -16,9 +16,13 @@ class DrawText {
         this._textAlign = options.hasOwnProperty("textAlign") ? options.textAlign : "center";
         this._hJust = options.hasOwnProperty("hJust") ? options.hJust : "center";
         this._vJust = options.hasOwnProperty("vJust") ? options.vJust : "center";
-        this._fontColors = options.hasOwnProperty("fontColors") ? options.fontColors : {default: "#000000"};
+        this._fontColors = options.hasOwnProperty("fontColors") ? options.fontColors : { default: "#000000" };
         this._stroke = options.hasOwnProperty("stroke") ? options.stroke : false;
         this._fill = options.hasOwnProperty("fill") ? options.fill : true;
+        this._hasDropShadow = options.hasOwnProperty("hasDropShadow") ? options.hasDropShadow : false;
+        this._dropShadowColors = options.hasOwnProperty("dropShadowColors") ? options.dropShadowColors : { default: "#ffffff" };
+        this._dropShadowXoffset = options.hasOwnProperty("dropShadowXoffset") ? options.dropShadowXoffset : 1;
+        this._dropShadowYoffset = options.hasOwnProperty("dropShadowYoffset") ? options.dropShadowYoffset : 1;
     }
 
     get ctx() {
@@ -91,6 +95,10 @@ class DrawText {
 
     get fontColors() {
         return this._fontColors;
+    }
+
+    get hasDropShadow() {
+        return this._hasDropShadow;
     }
 
     set text(value) {
@@ -190,6 +198,10 @@ class DrawText {
         }
     }
 
+    set hasDropShadow(value) {
+        this._hasDropShadow = value;
+    }
+
     buildFont() {
         if (this._bold && this._italic) {
             return `bold italic ${this._fontSize}px ${this._fontName}`;
@@ -217,11 +229,11 @@ class DrawText {
     setFontColor(fontColor) {
         let fc;
         if (fontColor) {
-            fc =  fontColor;
+            fc = fontColor;
         } else {
             fc = this._fontColors.default;
         }
-        if(this._stroke) {
+        if (this._stroke) {
             this._ctx.strokeStyle = fc;
         } else {
             this._ctx.fillStyle = fc;
@@ -290,8 +302,14 @@ class DrawText {
             for (let i = 0; i < text.length; i++) {
                 let tempHjust = centerX - (this._ctx.measureText(text[i]).width / 2)
                 if (this._stroke) {
+                    if (this._hasDropShadow) {
+                        this.drawDropShadow(text[i], tempHjust, tempVjust);
+                    }
                     this._ctx.strokeText(text[i], tempHjust, tempVjust);
                 } else {
+                    if (this._hasDropShadow) {
+                        this.drawDropShadow(text[i], tempHjust, tempVjust);
+                    }
                     this._ctx.fillText(text[i], tempHjust, tempVjust);
                 }
                 tempVjust += lineHeight;
@@ -303,8 +321,14 @@ class DrawText {
             this.hJust = options.hasOwnProperty("hJust") ? options.hJust : "center";
             this.vJust = options.hasOwnProperty("vJust") ? options.vJust : "center";
             if (this._stroke) {
+                if (this._hasDropShadow) {
+                    this.drawDropShadow(this._text, this.hJust, this.vJust);
+                }
                 this._ctx.strokeText(this._text, this.hJust, this.vJust);
             } else {
+                if (this._hasDropShadow) {
+                    this.drawDropShadow(this._text, this.hJust, this.vJust);
+                }
                 this._ctx.fillText(this._text, this.hJust, this.vJust);
             }
         }
@@ -318,9 +342,27 @@ class DrawText {
         this._ctx.textAlign = this._textAlign;
         this.setFontColor();
         if (this._stroke) {
+            if (this._hasDropShadow) {
+                this.drawDropShadow(this._text, x, y);
+            }
             this._ctx.stroke(this._text, x, y);
         } else {
+            if (this._hasDropShadow) {
+                this.drawDropShadow(this._text, x, y);
+            }
             this._ctx.fillText(this._text, x, y);
+        }
+        this._ctx.restore();
+    }
+
+    drawDropShadow(text, x, y) {
+        this._ctx.save();
+        if (this._stroke) {
+            this._ctx.strokeStyle = this._dropShadowColors.default;
+            this._ctx.strokeText(text, x + this._dropShadowXoffset, y + this._dropShadowYoffset);
+        } else {
+            this._ctx.fillStyle = this._dropShadowColors.default;
+            this._ctx.fillText(text, x + this._dropShadowXoffset, y + this._dropShadowYoffset);
         }
         this._ctx.restore();
     }
@@ -348,9 +390,15 @@ class DrawText {
         }
         text.forEach((t, i) => {
             if (this._stroke) {
+                if (this._hasDropShadow) {
+                    this.drawDropShadow(t, centerX, y);
+                }
                 this._ctx.strokeText(t, centerX, y);
                 y += lineHeight;
             } else {
+                if (this._hasDropShadow) {
+                    this.drawDropShadow(t, centerX, y);
+                }
                 this._ctx.fillText(t, centerX, y);
                 y += lineHeight;
             }

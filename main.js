@@ -7,7 +7,8 @@ canvas.createPool();
 canvas.createBlock("J100");
 
 // add menu
-canvas.createMenu(2, canvas.height - 303, "MENU");
+// the "true" argument is for the drop shadown param
+canvas.createMenu(2, canvas.height - 303, "MENU", true);
 
 // add inital parts to pool
 canvas.createParts();
