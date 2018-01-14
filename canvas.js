@@ -17,6 +17,10 @@ class Canvas {
         this.curY = 0;
         this.lastX = 0
         this.lastY = 0;
+        this._translationOffsetX = 0;
+        this._translationOffsetY = 0;
+        this._mouseX = 0;
+        this._mouseY = 0;
     }
 
     get elt() {
@@ -115,7 +119,7 @@ class Canvas {
     }
 
     mousemove(e) {
-        console.log(e.buttons);
+        // console.log(e.buttons);
         this.curX = e.x;
         this.curY = e.y;
         if (this._block.popup.show) {
@@ -126,10 +130,12 @@ class Canvas {
             // do we need a separate variable for the part that's highlighted?
             // why not just say this._parts.highlighted
             this._mousePressed = e.buttons === 1
-            this._partHighlighted = this._parts.update(e.x, e.y, e.movementX, e.movementY, this._mousePressed);
-            this._poolContainer.update(e.x, e.y, this._partHighlighted);
-            this._block.update(e.x, e.y, this._partHighlighted);
-            this._menu.update(e.x, e.y);
+            this._mouseX = e.x - this._translationOffsetX;
+            this._mouseY = e.y - this._translationOffsetY;
+            this._partHighlighted = this._parts.update(this._mouseX, this._mouseY, e.movementX, e.movementY, this._mousePressed);
+            this._poolContainer.update(this._mouseX, this._mouseY, this._partHighlighted);
+            this._block.update(this._mouseX, this._mouseY, this._partHighlighted);
+            this._menu.update(this._mouseX, this._mouseY);
         }
         this.lastX = this.curX;
         this.lastY = this.curY;
@@ -149,8 +155,29 @@ class Canvas {
         this._mouseReleased = true;
         // console.log(this._poolContainer.highlighted);
         this._parts.drop([this._poolContainer.highlighted, this._block.rows.highlighted]);
-        this._block.checkForClick(e.x, e.y);
+        this._block.checkForClick(e.x, e.y, this._translationOffsetX, this._translationOffsetY);
         this._menu.checkForClick(e.x, e.y);
+    }
+
+    keydown(e) {
+        let dir = e.key;
+        switch (dir) {
+            // case "ArrowUp":
+            //     if(this._translationOffsetY)
+            //     this._translationOffsetY -= 100;
+            //     break;
+            // case "ArrowDown":
+            // this._translationOffsetY += 100;
+            //     break;
+            case "ArrowLeft":
+                if (this._translationOffsetX < 0) {
+                    this._translationOffsetX += 100;
+                }
+                break;
+            case "ArrowRight":
+                this._translationOffsetX -= 100;
+                break;
+        }
     }
 
     init() {
@@ -163,13 +190,19 @@ class Canvas {
         this._elt.addEventListener("mousemove", (e) => { this.mousemove(e) });
         this._elt.addEventListener("mousedown", (e) => { this.mousedown(e) });
         this._elt.addEventListener("mouseup", (e) => { this.mouseup(e) });
+        window.addEventListener("keydown", (e) => { this.keydown(e) });
     }
 
     draw() {
         // clear the screen at the start of every frame
         this._ctx.clearRect(0, 0, this.width, this.height);
+
+        this._ctx.save();
+
+        this._ctx.translate(this._translationOffsetX, this._translationOffsetY);
         // draw the menu
-        this._menu.draw();
+        // console.log(this._translationOffsetX, this._translationOffsetY);
+        this._menu.draw(this._translationOffsetX, this._translationOffsetY);
         // draw the row, walkways, hoist poles and beams
         this._block.draw();
         // draw the pool
@@ -183,7 +216,9 @@ class Canvas {
         }
 
         if (this._block.menu.show) {
-            this._block.menu.draw();
+            this._block.menu.draw(this._translationOffsetY, this._translationOffsetY);
         }
+
+        this._ctx.restore();
     }
 }

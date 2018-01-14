@@ -1,6 +1,5 @@
 class ButtonMenu extends Box {
     constructor(options) {
-        console.log(options);
         super(options);
         this._drawText = new DrawText({
             ctx: this._ctx,
@@ -71,8 +70,18 @@ class ButtonMenu extends Box {
         });
     }
 
-    draw() {
+    draw(px, py) {
         if (this._show) {
+            // console.log("this._x: ", this._x);
+            // console.log("this._y: ", this._y);
+            // console.log("tx: ", tx);
+            // console.log("ty: ", ty);
+            // console.log("newX: ", this._x + tx);
+            // console.log("newY: ", this._y + ty);
+            // if (this._x === tx) {
+            //     this._x += tx;
+            // }
+            // this._y += ty;
             this._shapes.rect(this._x, this._y, this._w, this._h, {
                 stroke: true,
                 strokeStyle: "#000000",

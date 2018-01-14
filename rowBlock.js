@@ -49,7 +49,7 @@ class RowBlock {
         }
     }
 
-    checkForClick(mx, my) {
+    checkForClick(mx, my, tx, ty) {
         for (let i = 0; i < this.rows.droppables.length; i++) {
             let t = this.rows.droppables[i]._textBox;
             if (t.contains(mx, my)) {
@@ -79,7 +79,7 @@ class RowBlock {
         }
         if(this._itemSelected) {
             let b = this._itemSelected.bounds();
-            this._menu.showAt(b.RIGHT, b.TOP - 25);
+            this._menu.showAt(b.RIGHT + tx, b.TOP - 25 + ty);
             this._menu.show = true;
         } else {
             this._menu.show = false;
